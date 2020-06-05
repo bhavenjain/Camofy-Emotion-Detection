@@ -1,2 +1,6 @@
 # Face recognition for hackathon
- detection
+
+
+in gad folder ----> run main.py
+for aws to work configure laptop to aws environment
+
