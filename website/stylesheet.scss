@@ -11,6 +11,10 @@ body{
     transition: .5s;
 }
 
+canvas {
+      position: absolute;
+}
+
 .parallax{
 	background-color: #000;
 	height:500px;

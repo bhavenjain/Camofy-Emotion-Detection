@@ -2,12 +2,14 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="stylesheet.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
-    <script type="text/javascript" src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="face-api.min.js"></script>
+    <script defer src="script.js"></script>
 </head>
 <body>
 
@@ -66,34 +68,40 @@
     </div>
     <br>
     
-</div>
-<script>
-    var slideIndex = [1, 1];
-    var slideId = ["mySlides1", "mySlides2"]
-    showSlides(1, 0);
-    showSlides(1, 1);
+    <script>
+        var slideIndex = [1, 1];
+        var slideId = ["mySlides1", "mySlides2"]
+        showSlides(1, 0);
+        showSlides(1, 1);
 
-    function plusSlides(n, no) {
-        showSlides(slideIndex[no] += n, no);
-    }
-
-    function showSlides(n, no) {
-        var i;
-        var x = document.getElementsByClassName(slideId[no]);
-        if (n > x.length) { slideIndex[no] = 1 }
-        if (n < 1) { slideIndex[no] = x.length }
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
+        function plusSlides(n, no) {
+            showSlides(slideIndex[no] += n, no);
         }
-        x[slideIndex[no] - 1].style.display = "block";
-    }    
-</script>
-<br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br>
-<br><br><br><br><br><br><br><br><br><br><br>
+
+        function showSlides(n, no) {
+            var i;
+            var x = document.getElementsByClassName(slideId[no]);
+            if (n > x.length) { slideIndex[no] = 1 }
+            if (n < 1) { slideIndex[no] = x.length }
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";
+            }
+            x[slideIndex[no] - 1].style.display = "block";
+        }    
+    </script>
+</div>
 
 
+
+
+
+
+<br><br><br><br><br><br><br><br><br><br><br>
+<div>
+<video id="video" style="margin-left: 25%;" width="720" height="560" autoplay="true" muted> </video>
+</div>
+
+<br><br><br><br><br><br><br><br><br><br><br>
 
 
 
