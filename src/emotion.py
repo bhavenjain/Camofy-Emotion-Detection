@@ -126,7 +126,7 @@ while True:
         prediction = model.predict(cropped_img)
         maxindex = int(np.argmax(prediction))
         EmotionList.append(emotion_dict[maxindex])
-        cv2.putText(frame, emotion_dict[maxindex], (x+20, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
+        cv2.putText(frame, emotion_dict[maxindex], (x, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
 
         blob=cv2.dnn.blobFromImage(frame, 1.0, (227,227), MODEL_MEAN_VALUES, swapRB=False)
@@ -140,6 +140,8 @@ while True:
         agePreds=ageNet.forward()
         age=ageList[agePreds[0].argmax()]
         AgeList.append(f'Age: {age[1:-1]} years')
+
+        cv2.putText(frame, f'{gender}, {age}', (x+150, y-60), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,255,255), 2, cv2.LINE_AA)
 
     cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
     if cv2.waitKey(1) & 0xFF == ord('q'):
