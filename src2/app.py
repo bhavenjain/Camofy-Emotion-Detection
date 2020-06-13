@@ -1,5 +1,7 @@
 from flask import Flask, render_template, Response, redirect, url_for, jsonify, request
 from camera import VideoCamera
+from statistics import mode
+import camera
 import cv2
 
 app = Flask(__name__, static_url_path='/static/')
@@ -7,20 +9,28 @@ app = Flask(__name__, static_url_path='/static/')
 video_stream = VideoCamera()
 
 
+def MostCommon(list):
+    try:
+        return(mode(list))
+    except:
+        return '19'
+
+
 @app.route('/')
 def index():
-    if request.method == 'POST':
-        # do stuff when the form is submitted
-
-        # redirect to end the POST handling
-        # the redirect can be to the same route or somewhere else
-        return redirect(url_for('video.html'))
     return render_template('index.html')
 
 
-@app.route('/video.html')
+@app.route('/video.html', methods=['GET', 'POST'])
 def demo():
+    if request.method == 'POST':
+        return redirect(url_for('trying'))
     return render_template('video.html')
+
+
+@app.route('/try.html')
+def trying():
+    return render_template('try.html', age=MostCommon(camera.AgeList))
 
 
 def gen(camera):
@@ -32,7 +42,6 @@ def gen(camera):
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
         yield frame
         yield b'\r\n\r\n'
-        # print(camera.AgeList)
 
 
 @app.route('/video_feed')
