@@ -2,6 +2,7 @@ import numpy as np
 import argparse
 import cv2
 import math
+import matplotlib as mp
 from statistics import mode
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense, Dropout, Flatten
@@ -51,9 +52,9 @@ class VideoCamera(object):
         genderModel = "gender_net.caffemodel"
 
         MODEL_MEAN_VALUES = (78.4263377603, 87.7689143744, 114.895847746)
-        ageList = ['(0-2)', '(4-6)', '(8-12)', '(15-20)',
-                   '(25-32)', '(38-43)', '(48-53)', '(60-100)']
-        genderList = ['Male', 'Female']
+        ageList = ['(17-20)', '(4-6)', '(8-12)', '(15-17)',
+                   '(20-25)', '(30-35)', '(40-45)', '(50+)']
+        genderList = ['Male', 'Female' ]
 
         faceNet = cv2.dnn.readNet(faceModel, faceProto)
         ageNet = cv2.dnn.readNet(ageModel, ageProto)

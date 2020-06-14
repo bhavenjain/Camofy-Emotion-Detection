@@ -3,6 +3,10 @@ from camera import VideoCamera
 from statistics import mode
 import camera
 import cv2
+import io
+import random
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 
 app = Flask(__name__, static_url_path='/static/')
 
@@ -13,7 +17,7 @@ def MostCommon(list):
     try:
         return(mode(list))
     except:
-        return '19'
+        return 'No list'
 
 
 @app.route('/')
@@ -28,21 +32,61 @@ def demo():
     return render_template('video.html')
 
 
-@app.route('/try.html')
+@app.route('/try1.html', methods=['POST'])
+def trying1():
+    return redirect(url_for('plot_png'))
+
+@app.route('/try2.html', methods=['POST'])
+def trying2():
+    return redirect(url_for('plot_pie'))
+    
+
+@app.route('/try.html', methods=['GET', 'POST'])
 def trying():
-    return render_template('try.html', age=MostCommon(camera.AgeList))
+    return render_template('try.html', age=MostCommon(camera.AgeList), gender=MostCommon(camera.GenderList), emotion=MostCommon(camera.EmotionList))
+
+@app.route('/plot.png')
+def plot_png():
+    fig = create_figure()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
+
+@app.route('/plotpie.png')
+def plot_pie():
+    fig = create_pie()
+    output = io.BytesIO()
+    FigureCanvas(fig).print_png(output)
+    return Response(output.getvalue(), mimetype='image/png')
 
 
 def gen(camera):
     camera = VideoCamera()
     count_frames = 0
-    while count_frames < 15:
+    while count_frames < 20:
         frame = camera.get_frame()
         count_frames += 1
         yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
         yield frame
         yield b'\r\n\r\n'
 
+def create_figure():
+    fig = Figure()
+    axis = fig.add_subplot(1, 1, 1)
+    xs = ["Neutral", "Happy", "Surprised", "Angry", "Sad",  "Disgusted", "Fearful"]
+    ys = [camera.EmotionList.count(x) for x in xs]
+    axis.bar(xs, ys)    
+    return fig
+
+def create_pie():
+    fig = Figure()
+    ax1 = fig.add_subplot()
+    emotions = ["Neutral", "Happy", "Surprised", "Angry", "Sad",  "Disgusted", "Fearful"]
+    xs = [x for x in emotions if camera.EmotionList.count(x) is not 0]
+    ys = [camera.EmotionList.count(x) for x in xs]
+    ax1.pie(ys,  labels=xs, autopct='%1.1f%%',shadow=False, startangle=90)
+    ax1.axis('equal')
+    return fig
 
 @app.route('/video_feed')
 def video_feed():
