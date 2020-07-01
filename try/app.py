@@ -36,14 +36,16 @@ def demo():
 def trying1():
     return redirect(url_for('plot_png'))
 
+
 @app.route('/try2.html', methods=['POST'])
 def trying2():
     return redirect(url_for('plot_pie'))
-    
+
 
 @app.route('/try.html', methods=['GET', 'POST'])
 def trying():
     return render_template('try.html', age=MostCommon(camera.AgeList), gender=MostCommon(camera.GenderList), emotion=MostCommon(camera.EmotionList))
+
 
 @app.route('/plot.png')
 def plot_png():
@@ -51,6 +53,7 @@ def plot_png():
     output = io.BytesIO()
     FigureCanvas(fig).print_png(output)
     return Response(output.getvalue(), mimetype='image/png')
+
 
 @app.route('/plotpie.png')
 def plot_pie():
@@ -70,23 +73,28 @@ def gen(camera):
         yield frame
         yield b'\r\n\r\n'
 
+
 def create_figure():
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
-    xs = ["Neutral", "Happy", "Surprised", "Angry", "Sad",  "Disgusted", "Fearful"]
+    xs = ["Neutral", "Happy", "Surprised",
+          "Angry", "Sad",  "Disgusted", "Fearful"]
     ys = [camera.EmotionList.count(x) for x in xs]
-    axis.bar(xs, ys)    
+    axis.bar(xs, ys)
     return fig
+
 
 def create_pie():
     fig = Figure()
     ax1 = fig.add_subplot()
-    emotions = ["Neutral", "Happy", "Surprised", "Angry", "Sad",  "Disgusted", "Fearful"]
-    xs = [x for x in emotions if camera.EmotionList.count(x) is not 0]
+    emotions = ["Neutral", "Happy", "Surprised",
+                "Angry", "Sad",  "Disgusted", "Fearful"]
+    xs = [x for x in emotions if camera.EmotionList.count(x) is not None]
     ys = [camera.EmotionList.count(x) for x in xs]
-    ax1.pie(ys,  labels=xs, autopct='%1.1f%%',shadow=False, startangle=90)
+    ax1.pie(ys,  labels=xs, autopct='%1.1f%%', shadow=False, startangle=90)
     ax1.axis('equal')
     return fig
+
 
 @app.route('/video_feed')
 def video_feed():
