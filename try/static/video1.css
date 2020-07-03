@@ -413,10 +413,12 @@ body {
 }
 
 .slideshow-container {
-	max-width: 708px;
+	max-width: 890px;
 	position: absolute;
 	left: 2%;
-	top: 51.75%;
+	top: 55.5%;
+	max-height: 800px;
+	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);	
 }
 
 /* Next & previous buttons */

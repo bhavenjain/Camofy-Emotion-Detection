@@ -1,4 +1,5 @@
 from PIL import Image
+import PIL
 import numpy as np
 import argparse
 import cv2
@@ -6,10 +7,14 @@ import math
 import matplotlib as mp
 from statistics import mode
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Flatten
+from tensorflow.keras.layers import Dense, Dropout, Flatten, BatchNormalization
 from tensorflow.keras.layers import Conv2D
 from tensorflow.keras.layers import MaxPooling2D
 import os
+AgeList = []
+GenderList = []
+EmotionDict ={}
+EmotionList = []
 
 class Makeup_artist(object):
     def __init__(self):
@@ -70,16 +75,19 @@ class Makeup_artist(object):
     # Variable cap used once
 
         #while cv2.waitKey(1) < 0 and not None:
-        hasFrame, frame = img
-        #    if not hasFrame:
-        #        cv2.waitKey()
-        #        break
+        numpy_image=np.array(img)  
+
+# convert to a openCV2 image, notice the COLOR_RGB2BGR which means that 
+# the color is converted from RGB to BGR format
+        frame=cv2.cvtColor(numpy_image, cv2.COLOR_RGB2BGR)
+
 
         facecasc = cv2.CascadeClassifier(
                'haarcascade_frontalface_default.xml')
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         faces = facecasc.detectMultiScale(
         gray, scaleFactor=1.3, minNeighbors=5)
+#        finals=None
 
 
         for (x, y, w, h) in faces:
@@ -107,4 +115,10 @@ class Makeup_artist(object):
 
             cv2.putText(frame, f'{gender}, {age}', (x + 150, y - 60),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2, cv2.LINE_AA)
-        return frame
+
+            
+        finals=Image.fromarray(
+                          cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+                         )       
+
+        return finals
