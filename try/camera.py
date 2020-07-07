@@ -10,6 +10,7 @@ from tensorflow.keras.layers import Conv2D, BatchNormalization
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import MaxPooling2D
+import emoji
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 AgeList = []
@@ -70,8 +71,8 @@ class VideoCamera(object):
         cv2.ocl.setUseOpenCL(False)
 
     # dictionary which assigns each label an emotion (alphabetical order)
-        emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful",
-                        3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
+        emotion_dict = {0: "Angry" emoji.emojize(":rage"), 1: "Disgusted" emoji.emojize(":confounded:"), 2: "Fearful" emoji.emojize(":fearful:"),
+                        3: "Happy" emoji.emojize(":smiley: "), 4: "Neutral" emoji.emojize(":expressionless: "), 5: "Sad" emoji.emojize(":cry: "), 6: "Surprised" emoji.emojize(":open_mouth:")}
 
     # start the webcam feed
         video = cv2.VideoCapture(0)
