@@ -10,7 +10,6 @@ from tensorflow.keras.layers import Conv2D, BatchNormalization
 from keras.callbacks import ModelCheckpoint, ReduceLROnPlateau
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import MaxPooling2D
-import emoji
 import os
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 AgeList = []
@@ -24,7 +23,7 @@ class VideoCamera(object):
     def __init__(self):
         return
 
-    def get_frame(self):
+    def get_frame(self,img):
 
         faceProto = "opencv_face_detector.pbtxt"
         faceModel = "opencv_face_detector_uint8.pb"
@@ -66,63 +65,57 @@ class VideoCamera(object):
         model.add(Dense(7, activation='softmax'))
 
         model.load_weights('model.h5')
-
+        
     # prevents openCL usage and unnecessary logging messages
         cv2.ocl.setUseOpenCL(False)
 
     # dictionary which assigns each label an emotion (alphabetical order)
-        emotion_dict = {0: "Angry", 1: "Disgusted" , 2: "Fearful" ,
-                        3: "Happy" , 4: "Neutral" , 5: "Sad" , 6: "Surprised" }
+        emotion_dict = {0: "Angry", 1: "Disgusted", 2: "Fearful",
+                        3: "Happy", 4: "Neutral", 5: "Sad", 6: "Surprised"}
 
-    # start the webcam feed
-        video = cv2.VideoCapture(0)
-        padding = 20
-    # Variable cap used once
+    # strt the webcam feed
+        # Variable cap used once
         
-        while cv2.waitKey(1) < 0 and not None:
-            hasFrame, frame = video.read()
-            if not hasFrame:
-                cv2.waitKey()
-                break
-
-            facecasc = cv2.CascadeClassifier(
+        
+        frame = img
+        
+        facecasc = cv2.CascadeClassifier(
                 'haarcascade_frontalface_default.xml')
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            faces = facecasc.detectMultiScale(
-                gray, scaleFactor=1.3, minNeighbors=5)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        faces = facecasc.detectMultiScale(
+        gray, scaleFactor=1.3, minNeighbors=5)
 
+        for (x, y, w, h) in faces:
+            cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
+            roi_gray = gray[y:y + h, x:x + w]
+            cropped_img = np.expand_dims(np.expand_dims(
+                cv2.resize(roi_gray, (48, 48)), -1), 0)
+            prediction = model.predict(cropped_img)
+            maxindex = int(np.argmax(prediction))
+            EmotionList.append(emotion_dict[maxindex])
 
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y-50), (x+w, y+h+10), (255, 0, 0), 2)
-                roi_gray = gray[y:y + h, x:x + w]
-                cropped_img = np.expand_dims(np.expand_dims(
-                    cv2.resize(roi_gray, (48, 48)), -1), 0)
-                prediction = model.predict(cropped_img)
-                maxindex = int(np.argmax(prediction))
-                EmotionList.append(emotion_dict[maxindex])
+            cv2.putText(frame, emotion_dict[maxindex], (
+                   x, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
 
-                cv2.putText(frame, emotion_dict[maxindex], (
-                    x, y-60), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2, cv2.LINE_AA)
-
-                blob = cv2.dnn.blobFromImage(
+            blob = cv2.dnn.blobFromImage(
                     frame, 1.0, (227, 227), MODEL_MEAN_VALUES, swapRB=False)
-                genderNet.setInput(blob)
-                genderPreds = genderNet.forward()
-                gender = genderList[genderPreds[0].argmax()]
-                GenderList.append(f'{gender}')
+            genderNet.setInput(blob)
+            genderPreds = genderNet.forward()
+            gender = genderList[genderPreds[0].argmax()]
+            GenderList.append(f'{gender}')
 
-                ageNet.setInput(blob)
-                agePreds = ageNet.forward()
-                age = ageList[agePreds[0].argmax()]
-                AgeList.append(f'{age[1:-1]} years')
+            ageNet.setInput(blob)
+            agePreds = ageNet.forward()
+            age = ageList[agePreds[0].argmax()]
+            AgeList.append(f'{age[1:-1]} years')
 
-                cv2.putText(frame, f'{gender}, {age}', (x + 150, y - 60),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2, cv2.LINE_AA)
+            cv2.putText(frame, f'{gender}, {age}', (x + 150, y - 60),
+                          cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 255), 2, cv2.LINE_AA)
             
-            frame, jpeg = cv2.imencode('.jpg', frame)
-            return jpeg.tobytes()
+        frame, jpeg = cv2.imencode('.jpg', frame)
+        return jpeg.tobytes()
 
-            '''cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
+        '''cv2.imshow('Video', cv2.resize(frame,(1600,960),interpolation = cv2.INTER_CUBIC))
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
-        cv2.destroyAllWindows'''
+            cv2.destroyAllWindows'''

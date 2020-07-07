@@ -77,12 +77,20 @@ def plot_pie():
 def gen():
     camera = VideoCamera()
     count_frames = 0
-    while count_frames < 40:
-        frame = camera.get_frame()
-        count_frames += 1
-        yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
-        yield frame
-        yield b'\r\n\r\n'
+    video = cv2.VideoCapture(0)
+    while cv2.waitKey(1) < 0 and not None:
+            hasFrame, img = video.read()
+            if not hasFrame:
+                cv2.waitKey()
+                break
+            frame = camera.get_frame(img)
+            yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
+            yield frame
+            yield b'\r\n\r\n'
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                cv2.destroyAllWindows
+                break
+                
 
 
 def create_figure():
