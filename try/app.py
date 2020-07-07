@@ -41,6 +41,17 @@ def trying1():
 def trying2():
     return redirect(url_for('plot_pie'))
 
+@app.route('/try3.html', methods=['POST'])
+def trying3():
+    return redirect(url_for('frames'))
+
+@app.route('/frame.html')
+def frames():
+    key=1
+    for emotion in camera.EmotionList:
+        camera.EmotionDict[key] = emotion
+        key+=1
+    return render_template('frame.html', table = camera.EmotionDict, emo = MostCommon(camera.EmotionList))
 
 @app.route('/try.html', methods=['GET', 'POST'])
 def trying():
@@ -63,7 +74,7 @@ def plot_pie():
     return Response(output.getvalue(), mimetype='image/png')
 
 
-def gen(camera):
+def gen():
     camera = VideoCamera()
     count_frames = 0
     while count_frames < 40:
@@ -89,7 +100,7 @@ def create_pie():
     ax1 = fig.add_subplot()
     emotions = ["Neutral", "Happy", "Surprised",
                 "Angry", "Sad",  "Disgusted", "Fearful"]
-    xs = [x for x in emotions if camera.EmotionList.count(x) is not None]
+    xs = [x for x in emotions if camera.EmotionList.count(x) is not 0]
     ys = [camera.EmotionList.count(x) for x in xs]
     ax1.pie(ys,  labels=xs, autopct='%1.1f%%', shadow=False, startangle=90)
     ax1.axis('equal')
@@ -98,7 +109,7 @@ def create_pie():
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen(video_stream),
+    return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
