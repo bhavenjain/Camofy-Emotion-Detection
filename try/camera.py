@@ -71,8 +71,8 @@ class VideoCamera(object):
         cv2.ocl.setUseOpenCL(False)
 
     # dictionary which assigns each label an emotion (alphabetical order)
-        emotion_dict = {0: "Angry" emoji.emojize(":rage"), 1: "Disgusted" emoji.emojize(":confounded:"), 2: "Fearful" emoji.emojize(":fearful:"),
-                        3: "Happy" emoji.emojize(":smiley: "), 4: "Neutral" emoji.emojize(":expressionless: "), 5: "Sad" emoji.emojize(":cry: "), 6: "Surprised" emoji.emojize(":open_mouth:")}
+        emotion_dict = {0: "Angry", 1: "Disgusted" , 2: "Fearful" ,
+                        3: "Happy" , 4: "Neutral" , 5: "Sad" , 6: "Surprised" }
 
     # start the webcam feed
         video = cv2.VideoCapture(0)
