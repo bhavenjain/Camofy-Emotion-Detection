@@ -150,7 +150,6 @@ canvas {
 	color: #e7e7e7;
 }
 .light-theme {
-
 	background: #e7e7e7;
 	color: #262626;
 }
@@ -588,4 +587,10 @@ canvas {
 	top: 50%;
 	-webkit-transform: translate(0, -50%);
 	transform: translate(0, -50%);
+}
+
+.trailer_div {
+	height: 1000px;
+	width: 100%;
+	overflow: hidden;
 }
