@@ -36,32 +36,18 @@
                 <td>{{gender}}</td>
             </tr>
             <tr>
-                <td>The Emotion</td>
+                <td>Dominating Emotion</td>
                 <td>{{emotion}}</td>
             </tr>      
         </table>
-      </div>
-
-    
-    <form action="/try1.html" method="POST">
-        <button class="plot" type="submit">Histogram</button>
-    </form>    
-
-    <form action = "/try2.html" method="post">
-        <button class="plot1" type="submit">Pie Chart</button>
-    </form>    
-
-
-    <form action = "/try3.html" method="post">
-        <button class="plot2" type="submit">Frames</button>
-    </form>    
 
     <br><br><br><br><br><br><br><br>
-    
+      
+    <img class="image" src="{{ url_for('plot_pie') }}" width="850" height="500">
+    <img class="image2" src="{{ url_for('plot_png') }}" width="850" height="500">
 
     <br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-
+      </div>
 
     <div class="parallax">
         <h2 class="The">The</h2>

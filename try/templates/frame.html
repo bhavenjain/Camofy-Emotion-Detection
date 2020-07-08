@@ -29,13 +29,43 @@
           </thead>
           {% for key, value in table.items() %}
           <tbody>
-            {% if value == emo %}
+            {% if value == "Happy" %}
             <tr class="success">
               <td>{{key}}</td>
               <td>{{value}}</td>
             </tr>
             {% endif %}
-            {% if value != emo %}
+            {% if value == "Sad" %}
+            <tr class="info">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>      
+            {% endif %}
+            {% if value == "Angry" %}
+            <tr class="danger">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>      
+            {% endif %}
+            {% if value == "Disgusted" %}
+            <tr class="warning">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>      
+            {% endif %}
+            {% if value == "Surprised" %}
+            <tr class="active">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>      
+            {% endif %}
+            {% if value == "Fearful" %}
+            <tr class="active">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>      
+            {% endif %}
+            {% if value == "Neutral" %}
             <tr>
                 <td>{{key}}</td>
                 <td>{{value}}</td>
