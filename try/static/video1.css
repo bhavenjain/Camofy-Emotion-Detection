@@ -119,7 +119,7 @@ body {
 .table {
 	text-align: left;
 	color: #262626;
-	margin-left: 29%;
+	margin-left: 25%;
 	font-size: 2vw;
 	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 	letter-spacing: 2px;
@@ -173,6 +173,8 @@ body {
 	transition: 1s;
 }
 
+
+
 .video {
 	margin-left: 51.3%;
 	align-self: center;
@@ -209,6 +211,54 @@ body {
 	animation: ani2 5s infinite;
 	animation-delay: -3s;
 	max-width: 10%;
+}
+
+
+.image {
+	margin-left: 2%;
+	align-self: left;
+	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);
+}
+
+* {
+	box-sizing: border-box;
+}
+.container {
+	display: inline-block;
+}
+.end1,
+.middle1,
+.middle2 {
+	display: inline-block;
+	overflow: hidden;
+	height: 1.5em;
+}
+.end2 {
+	position: absolute;
+	color: #ff6a00;
+}
+.middle1,
+.middle2 {
+	color: #cfcfcf;
+}
+.middle1 {
+	animation: ani1 5s infinite;
+	animation-delay: -3s;
+	max-width: 0;
+}
+.middle2 {
+	animation: ani2 5s infinite;
+	animation-delay: -3s;
+	max-width: 10%;
+}
+
+.image2{
+	max-width: 890px;
+	position: absolute;
+	left: 52%;
+	top: 75%;
+	max-height: 800px;
+	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);	
 }
 
 @keyframes ani1 {

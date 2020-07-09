@@ -32,18 +32,6 @@ def demo():
     return render_template('video.html')
 
 
-@app.route('/try1.html', methods=['POST'])
-def trying1():
-    return redirect(url_for('plot_png'))
-
-
-@app.route('/try2.html', methods=['POST'])
-def trying2():
-    return redirect(url_for('plot_pie'))
-
-@app.route('/try3.html', methods=['POST'])
-def trying3():
-    return redirect(url_for('frames'))
 
 @app.route('/frame.html')
 def frames():
@@ -58,7 +46,7 @@ def trying():
     return render_template('try.html', age=MostCommon(camera.AgeList), gender=MostCommon(camera.GenderList), emotion=MostCommon(camera.EmotionList))
 
 
-@app.route('/plot.png')
+@app.route('/plot_png')
 def plot_png():
     fig = create_figure()
     output = io.BytesIO()
@@ -66,7 +54,7 @@ def plot_png():
     return Response(output.getvalue(), mimetype='image/png')
 
 
-@app.route('/plotpie.png')
+@app.route('/plot_pie')
 def plot_pie():
     fig = create_pie()
     output = io.BytesIO()
@@ -76,23 +64,26 @@ def plot_pie():
 
 def gen():
     camera = VideoCamera()
-    count_frames = 0
-    video = cv2.VideoCapture(0)
-    while cv2.waitKey(1) < 0 and not None:
+    while True:
+        count_frames = 0
+        video = cv2.VideoCapture(0)
+        while cv2.waitKey(1) < 0 and not None:
             hasFrame, img = video.read()
             if not hasFrame:
                 cv2.waitKey()
                 break
             frame = camera.get_frame(img)
+            count_frames+=1
             yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
             yield frame
             yield b'\r\n\r\n'
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                cv2.destroyAllWindows
+            if count_frames == 20:
                 break
+        video.release() 
+        cv2.destroyAllWindows 	
+   
+
                 
-
-
 def create_figure():
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
@@ -101,6 +92,28 @@ def create_figure():
     ys = [camera.EmotionList.count(x) for x in xs]
     axis.bar(xs, ys)
     return fig
+
+    xs = mu + sigma * np.random.randn(437)
+
+    num_bins = 50
+
+    fig, ax = plt.subplots()
+
+    # the histogram of the data
+    n, bins, patches = ax.hist(x, num_bins, density=1)
+
+    # add a 'best fit' line
+    y = ((1 / (np.sqrt(2 * np.pi) * sigma)) *
+        np.exp(-0.5 * (1 / sigma * (bins - mu))**2))
+    ax.plot(bins, y, '--')
+    ax.set_xlabel('Smarts')
+    ax.set_ylabel('Probability density')
+    ax.set_title(r'Histogram of IQ: $\mu=100$, $\sigma=15$')
+
+    # Tweak spacing to prevent clipping of ylabel
+    fig.tight_layout()
+    plt.show()
+
 
 
 def create_pie():
@@ -122,4 +135,4 @@ def video_feed():
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', debug=True, port="5000")
+    app.run(host='0.0.0.0', debug=True, port="5000")
