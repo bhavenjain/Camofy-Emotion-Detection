@@ -83,7 +83,7 @@ def gen():
             yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
             yield frame
             yield b'\r\n\r\n'
-            if count_frames == 20:
+            if count_frames == 50:
                 break
         video.release()
         cv2.destroyAllWindows
