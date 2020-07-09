@@ -114,7 +114,6 @@ body {
 
 .move {
 	left: 20%;
-
 }
 .table {
 	text-align: left;
@@ -173,8 +172,6 @@ body {
 	transition: 1s;
 }
 
-
-
 .video {
 	margin-left: 51.3%;
 	align-self: center;
@@ -212,7 +209,6 @@ body {
 	animation-delay: -3s;
 	max-width: 10%;
 }
-
 
 .image {
 	margin-left: 2%;
@@ -252,13 +248,13 @@ body {
 	max-width: 10%;
 }
 
-.image2{
+.image2 {
 	max-width: 890px;
 	position: absolute;
 	left: 52%;
 	top: 75%;
 	max-height: 800px;
-	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);	
+	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);
 }
 
 @keyframes ani1 {
@@ -536,12 +532,12 @@ body {
 }
 
 .slideshow-container {
-	max-width: 890px;
+	max-width: 500px;
 	position: absolute;
 	left: 2%;
 	top: 55.5%;
 	max-height: 800px;
-	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);	
+	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);
 }
 
 /* Next & previous buttons */

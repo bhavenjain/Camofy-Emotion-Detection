@@ -32,21 +32,25 @@ def demo():
     return render_template('video.html')
 
 
-
 @app.route('/frame.html')
 def frames():
-    key=1
+    key = 1
     for emotion in camera.EmotionList:
         camera.EmotionDict[key] = emotion
-        key+=1
-    return render_template('frame.html', table = camera.EmotionDict, emo = MostCommon(camera.EmotionList))
+        key += 1
+    return render_template('frame.html', table=camera.EmotionDict, emo=MostCommon(camera.EmotionList))
+
 
 @app.route('/try.html', methods=['GET', 'POST'])
 def trying():
-    return render_template('try.html', age=MostCommon(camera.AgeList), gender=MostCommon(camera.GenderList), emotion=MostCommon(camera.EmotionList))
+    exact = MostCommon(camera.EmotionList)
+    emotions = camera.EmotionList.count(exact)
+    percentage = float((emotions/len(camera.EmotionList))*100)
+
+    return render_template('try.html', age=MostCommon(camera.AgeList), gender=MostCommon(camera.GenderList), emotion=MostCommon(camera.EmotionList), perc=percentage)
 
 
-@app.route('/plot_png')
+@ app.route('/plot_png')
 def plot_png():
     fig = create_figure()
     output = io.BytesIO()
@@ -54,7 +58,7 @@ def plot_png():
     return Response(output.getvalue(), mimetype='image/png')
 
 
-@app.route('/plot_pie')
+@ app.route('/plot_pie')
 def plot_pie():
     fig = create_pie()
     output = io.BytesIO()
@@ -73,17 +77,16 @@ def gen():
                 cv2.waitKey()
                 break
             frame = camera.get_frame(img)
-            count_frames+=1
+            count_frames += 1
             yield b'--frame\r\nContent-Type: image/jpeg\r\n\r\n'
             yield frame
             yield b'\r\n\r\n'
             if count_frames == 20:
                 break
-        video.release() 
-        cv2.destroyAllWindows 	
-   
+        video.release()
+        cv2.destroyAllWindows
 
-                
+
 def create_figure():
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
@@ -104,7 +107,7 @@ def create_figure():
 
     # add a 'best fit' line
     y = ((1 / (np.sqrt(2 * np.pi) * sigma)) *
-        np.exp(-0.5 * (1 / sigma * (bins - mu))**2))
+         np.exp(-0.5 * (1 / sigma * (bins - mu))**2))
     ax.plot(bins, y, '--')
     ax.set_xlabel('Smarts')
     ax.set_ylabel('Probability density')
@@ -113,7 +116,6 @@ def create_figure():
     # Tweak spacing to prevent clipping of ylabel
     fig.tight_layout()
     plt.show()
-
 
 
 def create_pie():
@@ -128,7 +130,7 @@ def create_pie():
     return fig
 
 
-@app.route('/video_feed')
+@ app.route('/video_feed')
 def video_feed():
     return Response(gen(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
