@@ -211,8 +211,9 @@ body {
 }
 
 .image {
-	margin-left: 2%;
+	margin-left: 0;
 	align-self: left;
+	max-width: 57%;
 	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);
 }
 
@@ -249,10 +250,10 @@ body {
 }
 
 .image2 {
-	max-width: 890px;
+	max-width: 55%;
 	position: absolute;
-	left: 52%;
-	top: 75%;
+	left: 45%;
+	top: 72.5%;
 	max-height: 800px;
 	box-shadow: 30px 50px 90px 4px rgba(0, 0, 0, .5);
 }
