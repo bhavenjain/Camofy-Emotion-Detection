@@ -45,8 +45,10 @@ def frames():
 def trying():
     exact = MostCommon(camera.EmotionList)
     emotions = camera.EmotionList.count(exact)
-    percentage = float((emotions/len(camera.EmotionList))*100)
-
+    try:
+    	percentage = float((emotions/len(camera.EmotionList))*100)
+    except:
+    	percentage = 0		
     return render_template('try.html', age=MostCommon(camera.AgeList), gender=MostCommon(camera.GenderList), emotion=MostCommon(camera.EmotionList), perc=percentage)
 
 
@@ -90,7 +92,7 @@ def gen():
 def create_figure():
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
-    
+    camera.EmotionDict[0] = "0"
     key=1
     for emotion in camera.EmotionList:
         camera.EmotionDict[key] = emotion
