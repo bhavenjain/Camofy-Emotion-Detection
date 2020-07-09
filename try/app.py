@@ -90,33 +90,21 @@ def gen():
 def create_figure():
     fig = Figure()
     axis = fig.add_subplot(1, 1, 1)
-    xs = ["Neutral", "Happy", "Surprised",
-          "Angry", "Sad",  "Disgusted", "Fearful"]
-    ys = [camera.EmotionList.count(x) for x in xs]
-    axis.bar(xs, ys)
+    
+    key=1
+    for emotion in camera.EmotionList:
+        camera.EmotionDict[key] = emotion
+        key+=1
+   # ys = ["0","Neutral", "Happy", "Surprised","Angry", "Sad",  "Disgusted", "Fearful"]
+   # xs = []
+    #axis.set_title(r'Bar Plot')
+    #axis.set_xlabel('Emotions')
+    #axis.set_ylabel('Number of Frames')
+    #axis.bar(xs, ys)
+    axis.bar(camera.EmotionDict.keys(),camera.EmotionDict.values() )
     return fig
 
-    xs = mu + sigma * np.random.randn(437)
-
-    num_bins = 50
-
-    fig, ax = plt.subplots()
-
-    # the histogram of the data
-    n, bins, patches = ax.hist(x, num_bins, density=1)
-
-    # add a 'best fit' line
-    y = ((1 / (np.sqrt(2 * np.pi) * sigma)) *
-         np.exp(-0.5 * (1 / sigma * (bins - mu))**2))
-    ax.plot(bins, y, '--')
-    ax.set_xlabel('Smarts')
-    ax.set_ylabel('Probability density')
-    ax.set_title(r'Histogram of IQ: $\mu=100$, $\sigma=15$')
-
-    # Tweak spacing to prevent clipping of ylabel
-    fig.tight_layout()
-    plt.show()
-
+    
 
 def create_pie():
     fig = Figure()
