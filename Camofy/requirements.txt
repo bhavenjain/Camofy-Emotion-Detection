@@ -8,7 +8,7 @@ click==7.1.2
 cycler==0.10.0
 dnspython==1.16.0
 emoji==0.5.4
-eventlet==0.25.2
+eventlet==0.31.0
 Flask==1.1.2
 Flask-SocketIO==4.3.0
 gast==0.3.3
