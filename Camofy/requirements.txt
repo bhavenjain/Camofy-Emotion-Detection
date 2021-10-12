@@ -33,7 +33,7 @@ matplotlib==3.2.1
 monotonic==1.5
 numpy==1.17.4
 oauthlib==3.1.0
-opencv-python==4.1.2.30
+opencv-python==3.4.7.28
 opt-einsum==3.2.1
 pandas==1.0.5
 Pillow==7.1.2
